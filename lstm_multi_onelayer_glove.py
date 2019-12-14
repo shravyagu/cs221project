@@ -92,6 +92,7 @@ y = diag_labels.values
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
 
+# Tokenize the text.
 tokenizer = Tokenizer(num_words=20000)
 tokenizer.fit_on_texts(X_train)
 
@@ -104,6 +105,7 @@ X_train = pad_sequences(X_train, padding='post', maxlen=maxlen)
 X_test = pad_sequences(X_test, padding='post', maxlen=maxlen)
 
 
+# Load the pre-trained glove embeddingsand create an embedding matrix for our data based on the pre-trained embeddings.
 embeddings_dictionary = dict()
 
 glove_file = open('/Users/shravyag/Downloads/glove.6B.100d.txt', encoding="utf8")
