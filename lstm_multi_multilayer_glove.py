@@ -111,6 +111,7 @@ y3_test =  y_test[["Treatment"]].values
 y4_train = y_train[["Other"]].values
 y4_test =  y_test[["Other"]].values
 
+# Tokenize all the data.
 tokenizer = Tokenizer(num_words=20000)
 tokenizer.fit_on_texts(X_train)
 
@@ -124,6 +125,7 @@ maxlen = 10
 X_train = pad_sequences(X_train, padding='post', maxlen=maxlen)
 X_test = pad_sequences(X_test, padding='post', maxlen=maxlen)
 
+# Load the pre-trained glove embeddingsand create an embedding matrix for our data based on the pre-trained embeddings.
 
 embeddings_dictionary = dict()
 
