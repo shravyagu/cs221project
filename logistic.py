@@ -39,7 +39,6 @@ def f1_score(y_true, y_pred):
 
     # F1_score
     f1_score = 2 * (precision * recall) / (precision + recall + K.epsilon())
-    #print(K.cast_to_floatx(f1_score))
     return K.cast_to_floatx(f1_score)
 
 # Create custom metric for precision.
@@ -96,9 +95,13 @@ for row in range(len(df)):
         hist_df['History'].iloc[row] = 0
 
 # Split the dataset into training and testing data.
-X = hist_df["Train_x"]
+X_list = hist_df["Train_x"]
+X_arr = np.asarray(X_list)
+X = X_arr.transpose()
 y = labels.values
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
 
 # Tokenize the dataset.
 tokenizer = Tokenizer(num_words=20000)
@@ -119,30 +122,13 @@ model.compile(loss='binary_crossentropy', optimizer='sgd', metrics=['acc', f1_sc
 
 plot_model(model, to_file='hist_logist.png', show_shapes=True, show_layer_names=True)
 
-history = model.fit(X_train, y_train, batch_size=100, epochs=5, verbose=1, validation_split=0.2)
+history = model.fit(X_train, y_train, batch_size=100, epochs=1, verbose=1, validation_split=0.2)
 print(model.metrics_names)
 print(model.evaluate(X_test, y_test, verbose=1))
 
-plt.plot(history.history['acc'])
-plt.plot(history.history['val_acc'])
-
-plt.title('model accuracy')
-plt.ylabel('accuracy')
-plt.xlabel('epoch')
-plt.legend(['train','validation'], loc='upper left')
-plt.show()
-
-plt.plot(history.history['loss'])
-plt.plot(history.history['val_loss'])
-
-plt.title('model loss')
-plt.ylabel('loss')
-plt.xlabel('epoch')
-plt.legend(['train','validation'], loc='upper left')
-plt.show()
-
 #####################################################################################################################################################################################
 # Move to diagnosis dataframe.
+
 
 labels = df["Diagnosis"]
 # Convert multilabel dataset to binary classification problem.
@@ -178,28 +164,10 @@ model.compile(loss='binary_crossentropy', optimizer='sgd', metrics=['acc', f1_sc
 
 plot_model(model, to_file='diag_logist.png', show_shapes=True, show_layer_names=True)
 
-history = model.fit(X_train, y_train, batch_size=100, epochs=5, verbose=1, validation_split=0.2)
+history = model.fit(X_train, y_train, batch_size=100, epochs=1, verbose=1, validation_split=0.2)
 
 print(model.metrics_names)
 print(model.evaluate(X_test, y_test, verbose=1))
-
-plt.plot(history.history['acc'])
-plt.plot(history.history['val_acc'])
-
-plt.title('model accuracy')
-plt.ylabel('accuracy')
-plt.xlabel('epoch')
-plt.legend(['train','validation'], loc='upper left')
-plt.show()
-
-plt.plot(history.history['loss'])
-plt.plot(history.history['val_loss'])
-
-plt.title('model loss')
-plt.ylabel('loss')
-plt.xlabel('epoch')
-plt.legend(['train','validation'], loc='upper left')
-plt.show()
 
 
 #####################################################################################################################################################################################
@@ -238,25 +206,7 @@ model.compile(loss='binary_crossentropy', optimizer='sgd', metrics=['acc', f1_sc
 
 plot_model(model, to_file='treat_logist.png', show_shapes=True, show_layer_names=True)
 
-history = model.fit(X_train, y_train, batch_size=100, epochs=5, verbose=1, validation_split=0.2)
+history = model.fit(X_train, y_train, batch_size=100, epochs=1, verbose=1, validation_split=0.2)
 
 print(model.metrics_names)
 print(model.evaluate(X_test, y_test, verbose=1))
-
-plt.plot(history.history['acc'])
-plt.plot(history.history['val_acc'])
-
-plt.title('model accuracy')
-plt.ylabel('accuracy')
-plt.xlabel('epoch')
-plt.legend(['train','validation'], loc='upper left')
-plt.show()
-
-plt.plot(history.history['loss'])
-plt.plot(history.history['val_loss'])
-
-plt.title('model loss')
-plt.ylabel('loss')
-plt.xlabel('epoch')
-plt.legend(['train','validation'], loc='upper left')
-plt.show()
